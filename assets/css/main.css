@@ -12,7 +12,7 @@ header {
   margin: 0;
   position: sticky;
   width: 100%;
-  padding: .75rem;
+  padding: .75rem 0; /* Remove horizontal padding */
   box-sizing: border-box;
   border-bottom: 1px solid var(--borders);
   background-color: hsla(0, 0%, 100%, .8);
@@ -20,19 +20,77 @@ header {
   backdrop-filter: saturate(110%) blur(5px);
 }
 
+/* Container to match main content width */
+header .header-container {
+  max-width: 765px; /* Match the main content max-width */
+  margin: 0 auto;
+  padding: 0 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Home icon styling */
+header .home-icon {
+  display: flex;
+  align-items: center;
+}
+
+header .home-icon a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+/* Menu on the right */
+header nav {
+  margin-left: auto;
+}
+
 header ul {
   padding: 0;
   margin: 0;
+  display: flex;
+  list-style: none;
 }
 
 header li {
-  display: inline;
-  margin-right: 0.5em;
+  margin-left: 1em; /* Space between menu items */
 }
 
 header a {
   color: var(--text);
   text-decoration: none;
+}
+
+header a:hover {
+  color: var(--primary);
+}
+
+header .home-icon {
+  display: flex;
+  align-items: center;
+}
+
+header .home-icon a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+header .home-icon a:hover {
+  color: var(--primary);
+}
+
+header .home-icon svg {
+  transition: transform 0.2s ease;
+}
+
+header .home-icon a:hover svg {
+  transform: scale(1.1);
 }
 
 .toc {
@@ -43,15 +101,18 @@ header a {
   border: 1px solid var(--borders);
   background-color: #fff;
   font-size: smaller;
+  width: 150px; /* Add a specific width instead of relying on content */
+  max-height: 70vh; /* Prevent it from getting too tall */
+  overflow-y: auto; /* Add scrolling if content is too long */
 }
 
 .toc ul {
   list-style: none;
   padding-left: 0;
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal; /* Change from nowrap to normal */
+  overflow: visible; /* Change from hidden */
+  text-overflow: clip; /* Change from ellipsis */
 }
 
 .toc ul ul {
@@ -59,8 +120,15 @@ header a {
 }
 
 .toc li {
-  width: 100px;
-  text-overflow: ellipsis;
+  width: auto; /* Remove the fixed width constraint */
+  text-overflow: clip; /* Remove ellipsis */
+  margin-bottom: 0.25em; /* Add some spacing between items */
+  line-height: 1.3; /* Improve readability */
+}
+
+.toc a {
+  display: block; /* Make links fill the available space */
+  word-wrap: break-word; /* Allow long words to wrap */
 }
 
 main {
