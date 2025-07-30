@@ -1,0 +1,180 @@
+
+  <div class="character-sheet">
+    <!-- Character Header -->
+    <div class="character-header">
+      {{ with .Params.image }}
+        <div class="character-portrait">
+          <img src="{{ . }}" alt="{{ $.Title }}" onerror="if (this.src != '/img/placeholder.png') this.src = '/img/placeholder.png';">
+        </div>
+      {{ end }}
+      
+      <div class="character-info">
+        <h1>{{ .Title }}</h1>
+        
+        <!-- Character Badges -->
+        <div class="badges character-badges">
+          {{ with .GetTerms "races" }}
+            {{ range . }}
+              <a class="badge race" href="{{ .RelPermalink }}">
+                <img class="badgeimg" src="/img/races/{{ .LinkTitle | lower }}.svg" alt="" />
+                {{ .LinkTitle }}
+              </a>
+            {{ end }}
+          {{ end }}
+
+          {{ with .GetTerms "classes" }}
+            {{ range . }}
+              <a class="badge class" href="{{ .RelPermalink }}">
+                <img class="badgeimg" src="/img/classes/{{ .LinkTitle | lower }}.svg" alt="" />
+                {{ .LinkTitle }}
+              </a>
+            {{ end }}
+          {{ end }}
+
+          {{ with .GetTerms "backgrounds" }}
+            {{ range . }}
+              <a class="badge background" href="{{ .RelPermalink }}">
+                {{ .LinkTitle }}
+              </a>
+            {{ end }}
+          {{ end }}
+
+          {{ with .GetTerms "alignments" }}
+            {{ range . }}
+              <a class="badge alignment" href="{{ .RelPermalink }}">
+                {{ .LinkTitle }}
+              </a>
+            {{ end }}
+          {{ end }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Character Stats Section -->
+    {{ if or .Params.level .Params.hitpoints .Params.armorclass }}
+    <div class="character-stats">
+      <h2>Character Stats</h2>
+      <div class="stats-grid">
+        {{ with .Params.level }}
+          <div class="stat-block">
+            <strong>Level</strong>
+            <span>{{ . }}</span>
+          </div>
+        {{ end }}
+        
+        {{ with .Params.hitpoints }}
+          <div class="stat-block">
+            <strong>Hit Points</strong>
+            <span>{{ . }}</span>
+          </div>
+        {{ end }}
+        
+        {{ with .Params.armorclass }}
+          <div class="stat-block">
+            <strong>Armor Class</strong>
+            <span>{{ . }}</span>
+          </div>
+        {{ end }}
+        
+        {{ with .Params.speed }}
+          <div class="stat-block">
+            <strong>Speed</strong>
+            <span>{{ . }} ft</span>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+    {{ end }}
+
+    <!-- Ability Scores -->
+    {{ if or .Params.strength .Params.dexterity .Params.constitution .Params.intelligence .Params.wisdom .Params.charisma }}
+    <div class="ability-scores">
+      <h2>Ability Scores</h2>
+      <div class="abilities-grid">
+        {{ with .Params.strength }}
+          <div class="ability-score">
+            <strong>STR</strong>
+            <span class="score">{{ . }}</span>
+            <span class="modifier">{{ if ge . 10 }}+{{ end }}{{ div (sub . 10) 2 }}</span>
+          </div>
+        {{ end }}
+        
+        {{ with .Params.dexterity }}
+          <div class="ability-score">
+            <strong>DEX</strong>
+            <span class="score">{{ . }}</span>
+            <span class="modifier">{{ if ge . 10 }}+{{ end }}{{ div (sub . 10) 2 }}</span>
+          </div>
+        {{ end }}
+        
+        {{ with .Params.constitution }}
+          <div class="ability-score">
+            <strong>CON</strong>
+            <span class="score">{{ . }}</span>
+            <span class="modifier">{{ if ge . 10 }}+{{ end }}{{ div (sub . 10) 2 }}</span>
+          </div>
+        {{ end }}
+        
+        {{ with .Params.intelligence }}
+          <div class="ability-score">
+            <strong>INT</strong>
+            <span class="score">{{ . }}</span>
+            <span class="modifier">{{ if ge . 10 }}+{{ end }}{{ div (sub . 10) 2 }}</span>
+          </div>
+        {{ end }}
+        
+        {{ with .Params.wisdom }}
+          <div class="ability-score">
+            <strong>WIS</strong>
+            <span class="score">{{ . }}</span>
+            <span class="modifier">{{ if ge . 10 }}+{{ end }}{{ div (sub . 10) 2 }}</span>
+          </div>
+        {{ end }}
+        
+        {{ with .Params.charisma }}
+          <div class="ability-score">
+            <strong>CHA</strong>
+            <span class="score">{{ . }}</span>
+            <span class="modifier">{{ if ge . 10 }}+{{ end }}{{ div (sub . 10) 2 }}</span>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+    {{ end }}
+
+    <!-- Skills and Features -->
+    {{ if or .Params.skills .Params.features }}
+    <div class="character-features">
+      {{ with .Params.skills }}
+        <div class="skills-section">
+          <h3>Skills</h3>
+          <ul class="skills-list">
+            {{ range . }}
+              <li>{{ . }}</li>
+            {{ end }}
+          </ul>
+        </div>
+      {{ end }}
+      
+      {{ with .Params.features }}
+        <div class="features-section">
+          <h3>Features & Traits</h3>
+          <ul class="features-list">
+            {{ range . }}
+              <li>{{ . }}</li>
+            {{ end }}
+          </ul>
+        </div>
+      {{ end }}
+    </div>
+    {{ end }}
+
+    <!-- Character Description -->
+    <div class="character-description">
+      <h2>Description</h2>
+      {{ .Content }}
+    </div>
+
+    <!-- Tags -->
+    {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+  </div>

@@ -273,3 +273,146 @@ blockquote {
     display: none;
   }
 }
+
+/* Character Sheet Styling */
+.character-sheet {
+  max-width: 100%;
+}
+
+.character-header {
+  display: flex;
+  gap: 2em;
+  margin-bottom: 2em;
+  align-items: flex-start;
+}
+
+.character-portrait {
+  flex-shrink: 0;
+}
+
+.character-portrait img {
+  width: 150px;
+  height: 150px;
+  max-width: none;  /* Override the 50% max-width */
+  margin: 0;        /* Override the auto margin */
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--borders);
+}
+
+.character-info {
+  flex-grow: 1;
+}
+
+.character-badges {
+  margin-top: 1em;
+}
+
+/* Stats Grid */
+.character-stats {
+  margin-bottom: 2em;
+  padding: 1em;
+  background-color: var(--table-bg);
+  border: 1px solid var(--borders);
+  border-radius: 8px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1em;
+}
+
+.stat-block {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 0.5em;
+  border: 1px solid var(--borders);
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.stat-block strong {
+  font-size: 0.8em;
+  color: var(--accent);
+  margin-bottom: 0.25em;
+}
+
+.stat-block span {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+/* Ability Scores */
+.ability-scores {
+  margin-bottom: 2em;
+}
+
+.abilities-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1em;
+}
+
+.ability-score {
+  text-align: center;
+  padding: 1em;
+  border: 2px solid var(--borders);
+  border-radius: 8px;
+  background-color: var(--table-bg);
+}
+
+.ability-score strong {
+  display: block;
+  font-size: 0.8em;
+  color: var(--accent);
+  margin-bottom: 0.5em;
+}
+
+.ability-score .score {
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 0.25em;
+}
+
+.ability-score .modifier {
+  display: block;
+  font-size: 0.9em;
+  color: var(--text);
+}
+
+/* Features and Skills */
+.character-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+  margin-bottom: 2em;
+}
+
+.skills-list, .features-list {
+  list-style: none;
+  padding: 0;
+}
+
+.skills-list li, .features-list li {
+  padding: 0.25em 0;
+  border-bottom: 1px solid var(--borders);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .character-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .abilities-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .character-features {
+    grid-template-columns: 1fr;
+  }
+}
