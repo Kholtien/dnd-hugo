@@ -8,5 +8,8 @@
       </svg>
     </a>
   </div>
-  {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+  <div class="header-right">
+    {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+    {{ partial "dark-mode-toggle.html" . }}
+  </div>
 </div>

@@ -1,8 +1,9 @@
 {{ $pages := .pages }}
 {{ $useimagepermalink := .useimagepermalink }}
+{{ $isCampaign := .campaign }}
 
 {{ $placeholder := "/img/placeholder.png" }}
-<div class="container">
+<div class="container{{ if $isCampaign }} campaigns-grid{{ end }}">
     {{ range $pages }}
         {{ $cardimg := $placeholder }}
 
@@ -14,12 +15,37 @@
             {{ $cardimg = printf "/img%s.svg" (strings.TrimSuffix "/" .RelPermalink) }}
         {{ end }}
 
-        <a class="profile" href="{{ .RelPermalink }}">
-            <img class="profileimg"
+        <a class="profile{{ if $isCampaign }} campaign-card{{ end }}" href="{{ .RelPermalink }}">
+            <img class="profileimg{{ if $isCampaign }} campaign-img{{ end }}"
                 src="{{ $cardimg }}"
                 alt="{{ .Title }}"
                 onerror="if (this.src != '/img/placeholder.png') this.src = '/img/placeholder.png';">
-            {{ .LinkTitle }}
+            
+            <div class="card-content">
+              <h3>{{ .LinkTitle }}</h3>
+              
+              {{ if $isCampaign }}
+                <!-- Campaign-specific content -->
+                {{ with .GetTerms "modes" }}
+                  <div class="campaign-modes">
+                    {{ range . }}
+                      <span class="badge mode">{{ .LinkTitle }}</span>
+                    {{ end }}
+                  </div>
+                {{ end }}
+                
+                {{ with .Summary }}
+                  <p class="campaign-summary">{{ . | truncate 120 }}</p>
+                {{ end }}
+                
+                <!-- Session count -->
+                {{ $campaignName := .Title | urlize }}
+                {{ $sessionCount := len (where (where site.RegularPages "Type" "sessions") "Params.campaigns" "intersect" (slice $campaignName)) }}
+                {{ if gt $sessionCount 0 }}
+                  <p class="session-count">{{ $sessionCount }} session{{ if ne $sessionCount 1 }}s{{ end }}</p>
+                {{ end }}
+              {{ end }}
+            </div>
         </a>
     {{ end }}
 </div>

@@ -12,22 +12,64 @@ header {
   margin: 0;
   position: sticky;
   width: 100%;
-  padding: .75rem 0; /* Remove horizontal padding */
+  padding: .75rem 0;
   box-sizing: border-box;
   border-bottom: 1px solid var(--borders);
-  background-color: hsla(0, 0%, 100%, .8);
+  background-color: var(--background); /* Change from hardcoded white */
   -webkit-backdrop-filter: saturate(110%) blur(5px);
   backdrop-filter: saturate(110%) blur(5px);
 }
 
 /* Container to match main content width */
-header .header-container {
-  max-width: 765px; /* Match the main content max-width */
+/* Header layout update */
+.header-container {
+  max-width: 765px;
   margin: 0 auto;
   padding: 0 1em;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+/* Dark mode toggle */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--borders);
+  border-radius: 4px;
+  padding: 0.5em;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Show/hide icons based on theme */
+[data-theme="dark"] .sun-icon,
+.moon-icon {
+  display: none;
+}
+
+[data-theme="dark"] .moon-icon,
+.sun-icon {
+  display: block;
+}
+
+/* Transitions for smooth theme switching */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Home icon styling */
@@ -99,7 +141,7 @@ header .home-icon a:hover svg {
   top: 7em;
   padding: 1em;
   border: 1px solid var(--borders);
-  background-color: #fff;
+  background-color: var(--table-bg);
   font-size: smaller;
   width: 150px; /* Add a specific width instead of relying on content */
   max-height: 70vh; /* Prevent it from getting too tall */
@@ -236,7 +278,7 @@ blockquote {
   text-decoration: none;
   color: var(--text);
   text-align: center;
-  background-color: #fff;
+  background-color: var(--table-bg);
   line-height: normal;
   font-size: small;
 }
@@ -330,7 +372,7 @@ blockquote {
   padding: 0.5em;
   border: 1px solid var(--borders);
   border-radius: 4px;
-  background-color: #fff;
+  background-color: var(--table-bg);
 }
 
 .stat-block strong {
@@ -416,3 +458,79 @@ blockquote {
     grid-template-columns: 1fr;
   }
 }
+
+/* Campaign Cards */
+.campaigns-grid {
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2em;
+}
+
+.campaign-card {
+  width: 45%;
+  max-width: none;
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--table-bg);
+  border: 2px solid var(--borders);
+  transition: all 0.3s ease;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.campaign-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+}
+
+.campaign-img {
+  width: 400px;
+  height: 200px;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+}
+
+.campaign-card .card-content {
+  padding: 1.5em;
+}
+
+.campaign-card h3 {
+  margin: 0 0 1em 0;
+  font-size: 1.3em;
+  color: var(--text);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5em;
+}
+
+.campaign-modes {
+  margin-bottom: 1em;
+}
+
+.campaign-modes .badge {
+  margin-right: 0.5em;
+  font-size: 0.8em;
+}
+
+.campaign-summary {
+  color: var(--text);
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin-bottom: 1em;
+}
+
+.session-count {
+  font-size: 0.8em;
+  color: var(--accent);
+  font-style: italic;
+  margin: 0;
+  text-align: right;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .campaigns-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
