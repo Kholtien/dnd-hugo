@@ -1,9 +1,10 @@
 {{ $pages := .pages }}
 {{ $useimagepermalink := .useimagepermalink }}
 {{ $isCampaign := .campaign }}
+{{ $isSession := .session }}
 
 {{ $placeholder := "/img/placeholder.png" }}
-<div class="container{{ if $isCampaign }} campaigns-grid{{ end }}">
+<div class="container{{ if $isCampaign }} campaigns-grid{{ end }}{{ if $isSession }} sessions-grid{{ end }}">
     {{ range $pages }}
         {{ $cardimg := $placeholder }}
 
@@ -15,11 +16,13 @@
             {{ $cardimg = printf "/img%s.svg" (strings.TrimSuffix "/" .RelPermalink) }}
         {{ end }}
 
-        <a class="profile{{ if $isCampaign }} campaign-card{{ end }}" href="{{ .RelPermalink }}">
+        <a class="profile{{ if $isCampaign }} campaign-card{{ end }}{{ if $isSession }} session-card{{ end }}" href="{{ .RelPermalink }}">
+            {{ if not $isSession }}
             <img class="profileimg{{ if $isCampaign }} campaign-img{{ end }}"
                 src="{{ $cardimg }}"
                 alt="{{ .Title }}"
                 onerror="if (this.src != '/img/placeholder.png') this.src = '/img/placeholder.png';">
+            {{ end }}
             
             <div class="card-content">
               <h3>{{ .LinkTitle }}</h3>
@@ -43,6 +46,15 @@
                 {{ $sessionCount := len (where (where site.RegularPages "Type" "sessions") "Params.campaigns" "intersect" (slice $campaignName)) }}
                 {{ if gt $sessionCount 0 }}
                   <p class="session-count">{{ $sessionCount }} session{{ if ne $sessionCount 1 }}s{{ end }}</p>
+                {{ end }}
+              {{ else if $isSession }}
+                <!-- Session-specific content -->
+                {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+                {{ $dateHuman := .Date | time.Format "January 2, 2006" }}
+                <time class="session-date" datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+                
+                {{ with .Params.description }}
+                  <p class="session-summary">{{ . }}</p>
                 {{ end }}
               {{ end }}
             </div>

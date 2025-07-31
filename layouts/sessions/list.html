@@ -1,4 +1,4 @@
-{{ define "main" }}
+{{/*  {{ define "main" }}
   <h1>{{ .Title }}</h1>
   {{ .Content }}
   {{ range .Pages }}
@@ -9,4 +9,14 @@
     <p>{{ .Summary }}</p>
     <hr/>
   {{ end }}
+{{ end }}  */}}
+
+
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+
+  <div class="sessions-container">
+    {{ partial "cards.html" (dict "pages" .Pages "session" true) }}
+  </div>
 {{ end }}

@@ -1,0 +1,89 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+
+  <!-- Campaign modes badges -->
+  {{ with .GetTerms "modes" }}
+    <div class="badges" style="margin-bottom: 1.5em;">
+      {{ range . }}
+        <a class="badge mode" href="{{ .RelPermalink }}">
+          {{ .LinkTitle }}
+        </a>
+      {{ end }}
+    </div>
+  {{ end }}
+
+  <!-- Campaign content/description -->
+  {{ .Content }}
+
+  <!-- Sessions Section -->
+  {{ $campaignName := .Title | urlize }}
+  {{ $sessions := where site.RegularPages "Type" "sessions" }}
+  {{ $campaignSessions := where $sessions "Params.campaigns" "intersect" (slice $campaignName) }}
+  {{ if $campaignSessions }}
+    <h2>Sessions</h2>
+    <ul class="session-list">
+    {{ range $campaignSessions.ByDate }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        <time datetime="{{ .Date.Format "2006-01-02" }}" style="margin-left: 1em; font-size: small; color: var(--accent);">{{ .Date.Format "January 2, 2006" }}</time>
+      </li>
+    {{ end }}
+    </ul>
+  {{ end }}
+
+  <!-- Player Characters Section -->
+  {{ $characters := where site.RegularPages "Type" "characters" }}
+  {{ $campaignCharacters := where $characters "Params.campaigns" "intersect" (slice $campaignName) }}
+  {{ $pcs := where $campaignCharacters "Params.CharacterType" "pc" }}
+  {{ if $pcs }}
+    <h2>Player Characters</h2>
+    <ul class="character-list">
+    {{ range $pcs.ByTitle }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        {{ with .GetTerms "classes" }}
+          <span style="margin-left: 1em; font-size: small; color: var(--accent);">
+            {{ range $index, $class := . }}{{ if $index }}, {{ end }}{{ $class.LinkTitle }}{{ end }}
+          </span>
+        {{ end }}
+      </li>
+    {{ end }}
+    </ul>
+  {{ end }}
+
+  <!-- NPCs Section -->
+  {{ $npcs := where $campaignCharacters "Params.CharacterType" "npc" }}
+  {{ if $npcs }}
+    <h2>NPCs</h2>
+    <ul class="character-list">
+    {{ range $npcs.ByTitle }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        {{ with .GetTerms "races" }}
+          <span style="margin-left: 1em; font-size: small; color: var(--accent);">
+            {{ range $index, $race := . }}{{ if $index }}, {{ end }}{{ $race.LinkTitle }}{{ end }}
+          </span>
+        {{ end }}
+      </li>
+    {{ end }}
+    </ul>
+  {{ end }}
+
+  <!-- Spells Section (optional - only show if there are campaign-specific spells) -->
+  {{ $spells := where site.RegularPages "Type" "spells" }}
+  {{ $campaignSpells := where $spells "Params.campaigns" "intersect" (slice $campaignName) }}
+  {{ if $campaignSpells }}
+    <h2>Spells</h2>
+    <ul class="spell-list">
+    {{ range $campaignSpells.ByTitle }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        {{ with .Params.Components }}
+          <span style="margin-left: 1em; font-size: small; color: var(--accent);">({{ delimit . ", " | upper }})</span>
+        {{ end }}
+      </li>
+    {{ end }}
+    </ul>
+  {{ end }}
+
+{{ end }}

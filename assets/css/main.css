@@ -534,3 +534,110 @@ blockquote {
   }
 }
 
+/* Campaign page list styling */
+.session-list, .character-list, .spell-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 2em;
+}
+
+.session-list li, .character-list li, .spell-list li {
+  padding: 0.5em 0;
+  border-bottom: 1px solid var(--borders);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.session-list li:last-child, 
+.character-list li:last-child, 
+.spell-list li:last-child {
+  border-bottom: none;
+}
+
+.session-list a, .character-list a, .spell-list a {
+  color: var(--links);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.session-list a:hover, .character-list a:hover, .spell-list a:hover {
+  color: var(--primary);
+}
+
+/* Session Cards */
+.sessions-grid {
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5em;
+}
+
+.session-card {
+  width: 40%;
+  max-width: none;
+  padding: 1.5em;
+  border-radius: 8px;
+  background-color: var(--table-bg);
+  border: 2px solid var(--borders);
+  transition: all 0.3s ease;
+  text-align: left;
+  line-height: 1.4;
+  /* min-height: 200px; */
+  display: flex;
+  flex-direction: column;
+}
+
+.session-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+}
+
+.session-card .card-content {
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.session-card h3 {
+  margin: 0 0 1em 0;
+  font-size: 1.3em;
+  color: var(--text);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5em;
+}
+
+.session-date {
+  font-size: 0.9em;
+  color: var(--accent);
+  font-weight: bold;
+  margin-bottom: 1em;
+  display: block;
+}
+
+.session-campaigns {
+  margin-bottom: 1em;
+}
+
+.session-campaigns .badge {
+  margin-right: 0.5em;
+  font-size: 0.8em;
+}
+
+.session-summary {
+  color: var(--text);
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin: 0;
+  flex: 1;
+}
+
+/* Mobile responsive for sessions */
+@media (max-width: 768px) {
+  .sessions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .session-card {
+    min-height: 150px;
+  }
+}
