@@ -12,26 +12,60 @@
   </div>
 
   {{ .Content }}
-    
-  <h2>Played Characters</h2>
-  <ul>
-  {{ range where .Pages "Params.CharacterType" "pc" }}
-    <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+  
+  <!-- Sessions that reference this campaign -->
+  {{ $campaignName := .Title | urlize }}
+  {{ $sessions := where site.RegularPages "Type" "sessions" }}
+  {{ $campaignSessions := where $sessions "Params.campaigns" "intersect" (slice $campaignName) }}
+  {{ if $campaignSessions }}
+    <h2>Sessions</h2>
+    <ul class="session-list">
+    {{ range $campaignSessions.ByDate }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+      </li>
+    {{ end }}
+    </ul>
   {{ end }}
-  </ul>
 
-  <h2>NPCs</h2>
-  <ul>
-  {{ range where .Pages "Params.CharacterType" "npc" }}
-    <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+  <!-- Characters that reference this campaign -->
+  {{ $characters := where site.RegularPages "Type" "characters" }}
+  {{ $campaignCharacters := where $characters "Params.campaigns" "intersect" (slice $campaignName) }}
+  
+  <!-- Player Characters -->
+  {{ $pcs := where $campaignCharacters "Params.CharacterType" "pc" }}
+  {{ if $pcs }}
+    <h2>Player Characters</h2>
+    <div class="character-grid">
+      {{ partial "cards.html" (dict "pages" $pcs) }}
+    </div>
   {{ end }}
-  </ul>
 
-  <h2>Sessions</h2>
-  <ul>
-  {{ range where .Pages "Type" "sessions" }}
-    <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a> ({{ .Date | time.Format ":date_long" }})</li>
+  <!-- NPCs -->
+  {{ $npcs := where $campaignCharacters "Params.CharacterType" "npc" }}
+  {{ if $npcs }}
+    <h2>NPCs</h2>
+    <div class="character-grid">
+      {{ partial "cards.html" (dict "pages" $npcs) }}
+    </div>
   {{ end }}
-  </ul>
+
+  <!-- Spells that reference this campaign -->
+  {{ $spells := where site.RegularPages "Type" "spells" }}
+  {{ $campaignSpells := where $spells "Params.campaigns" "intersect" (slice $campaignName) }}
+  {{ if $campaignSpells }}
+    <h2>Spells</h2>
+    <ul class="spell-list">
+    {{ range $campaignSpells.ByTitle }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        {{ with .Params.Components }}
+          <span class="spell-components">({{ delimit . ", " | upper }})</span>
+        {{ end }}
+      </li>
+    {{ end }}
+    </ul>
+  {{ end }}
 
 {{ end }}
