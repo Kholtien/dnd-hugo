@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const savedTheme = localStorage.getItem('theme');
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    // Set initial theme
+    // Set initial theme WITHOUT animation
     let initialTheme = 'light';
     if (savedTheme) {
         initialTheme = savedTheme;
@@ -25,8 +25,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
+            // Add transition class for smooth animation
+            html.classList.add('theme-transitioning');
+            
+            // Change theme
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
+            
+            // Remove transition class after animation completes
+            setTimeout(() => {
+                html.classList.remove('theme-transitioning');
+            }, 300); // Match the CSS transition duration
         });
     }
 });
