@@ -12,6 +12,11 @@
     {{ end }}
   {{ end }}
 
-  {{ .Content }}
+  {{ .RenderString 
+      (replaceRE `\\((\!?)\[[[^]]*]])` `$1` (
+          replaceRE `(^|[^\\|!]{1})(\!?)(?:(\[\[([^]||]*)]])|(\[\[([^]||]*)\|([^]]*)]]))` `$1$2[$4$7](internalwiki
+  "$4$6")` .RawContent)
+      ) 
+  }}
   {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
 {{ end }}
